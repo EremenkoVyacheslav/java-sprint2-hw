@@ -7,7 +7,7 @@ public class YearlyReport {
     ArrayList<BilletYear> yearlyReport = new ArrayList<>();
 
     public void readLines() {
-        readFileContentsOrNull readFileContentsOrNull = new readFileContentsOrNull();
+        ReadFileContentsOrNull readFileContentsOrNull = new ReadFileContentsOrNull();
         String monthlyReportRaw = readFileContentsOrNull.readFileContentsOrNull("resources/y.2021.csv");
         String[] lines = monthlyReportRaw.split(System.lineSeparator());
         for (int i = 1; i < lines.length; i++) {
@@ -19,44 +19,50 @@ public class YearlyReport {
 
             ));
         }
+        System.out.println("Отчет успешно считан");
     }
 
     public void printReport() {
-        printYear();
-        averageAmounts();
-        int profitPerMonthTrue = 0;
-        int profitPerMonthFalse = 0;
-        int sumTrue = 0;
-        int sumFalse = 0;
 
-        if (yearlyReport.isEmpty()) {
-            System.out.println("Нет отчетов для отображения");
-        } else {
+        try {
+            printYear();
+            averageAmounts();
+            int profitPerMonthTrue = 0;
+            int profitPerMonthFalse = 0;
+            int sumTrue = 0;
+            int sumFalse = 0;
 
-            for (var detour : yearlyReport) {
+            if (yearlyReport.isEmpty()) {
+                System.out.println("Нет отчетов для отображения");
+            } else {
 
-                if (detour.isExpense) {
+                for (var detour : yearlyReport) {
 
-                    profitPerMonthTrue += detour.amount;
-                    sumTrue = profitPerMonthTrue / detour.month;
-                }
-                if (!detour.isExpense) {
+                    if (detour.isExpense) {
 
-                    profitPerMonthFalse += detour.amount;
-                    sumFalse = profitPerMonthFalse / detour.month;
+                        profitPerMonthTrue += detour.amount;
+                        sumTrue = profitPerMonthTrue / detour.month;
+                    }
+                    if (!detour.isExpense) {
 
+                        profitPerMonthFalse += detour.amount;
+                        sumFalse = profitPerMonthFalse / detour.month;
+
+                    }
                 }
             }
+
+            System.out.println("Средний расход за все месяцы: " + sumTrue);
+            System.out.println("Средний доход за все месяцы: " + sumFalse);
+        } catch (Exception e) {
+            System.out.println("В начале считайте годовой отчет!");
         }
-
-        System.out.println("Средний расход за все месяцы: " + sumTrue);
-        System.out.println("Средний доход за все месяцы: " + sumFalse);
-
 
     }
 
     public void printYear() {
-        File file = new File("resource/y.2021.csv");
+
+        File file = new File("resources/y.2021.csv");
         String fileName = file.getName();
         String fileNameWithoutSuffix = fileName.substring(2, fileName.lastIndexOf("."));
         System.out.println("Год:" + fileNameWithoutSuffix);

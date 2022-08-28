@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MonthlyReport {
-    readFileContentsOrNull readFileContentsOrNull = new readFileContentsOrNull();
+    ReadFileContentsOrNull readFileContentsOrNull = new ReadFileContentsOrNull();
     HashMap<Integer, ArrayList<BilletMonth>> monthlyReports = new HashMap<>();
     ArrayList<BilletMonth> monthlyReport = new ArrayList<>();
 
@@ -23,7 +23,7 @@ public class MonthlyReport {
             }
             monthlyReports.put(n, monthlyReport);
         }
-
+        System.out.println("Отчет успешно считан");
     }
 
     public void printReports() {
