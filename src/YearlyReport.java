@@ -7,57 +7,53 @@ public class YearlyReport {
     ArrayList<BilletYear> yearlyReport = new ArrayList<>();
 
     public void readLines() {
-        ReadFileContentsOrNull readFileContentsOrNull = new ReadFileContentsOrNull();
-        String monthlyReportRaw = readFileContentsOrNull.readFileContentsOrNull("resources/y.2021.csv");
-        String[] lines = monthlyReportRaw.split(System.lineSeparator());
-        for (int i = 1; i < lines.length; i++) {
-            String[] linesContent = lines[i].split(",");
-            yearlyReport.add(new BilletYear(
-                    Integer.parseInt(linesContent[0]),
-                    Integer.parseInt(linesContent[1]),
-                    Boolean.parseBoolean(linesContent[2])
+        if (yearlyReport.isEmpty()) {
+            ReadFileContentsOrNull readFileContentsOrNull = new ReadFileContentsOrNull();
+            String monthlyReportRaw = readFileContentsOrNull.readFileContentsOrNull("resources/y.2021.csv");
+            String[] lines = monthlyReportRaw.split("\n");
+            for (int i = 1; i < lines.length; i++) {
+                String[] linesContent = lines[i].split(",");
 
-            ));
+                yearlyReport.add(new BilletYear(
+                        Integer.parseInt(linesContent[0]),
+                        Integer.parseInt(linesContent[1]),
+                        Boolean.parseBoolean(linesContent[2])
+                ));
+            }
+            System.out.println("Отчет успешно считан");
+        } else {
+            System.out.println("Отчет уже загружен");
         }
-        System.out.println("Отчет успешно считан");
     }
 
     public void printReport() {
 
-        try {
+
+        int profitPerMonthTrue = 0;
+        int profitPerMonthFalse = 0;
+        int sumTrue = 0;
+        int sumFalse = 0;
+
+        if (yearlyReport.isEmpty()) {
+            System.out.println("Нет отчетов для отображения");
+        } else {
             printYear();
             averageAmounts();
-            int profitPerMonthTrue = 0;
-            int profitPerMonthFalse = 0;
-            int sumTrue = 0;
-            int sumFalse = 0;
 
-            if (yearlyReport.isEmpty()) {
-                System.out.println("Нет отчетов для отображения");
-            } else {
+            for (var detour : yearlyReport) {
+                if (detour.isExpense) {
+                    profitPerMonthTrue += detour.amount;
+                    sumTrue = profitPerMonthTrue / detour.month;
+                }
+                if (!detour.isExpense) {
+                    profitPerMonthFalse += detour.amount;
+                    sumFalse = profitPerMonthFalse / detour.month;
 
-                for (var detour : yearlyReport) {
-
-                    if (detour.isExpense) {
-
-                        profitPerMonthTrue += detour.amount;
-                        sumTrue = profitPerMonthTrue / detour.month;
-                    }
-                    if (!detour.isExpense) {
-
-                        profitPerMonthFalse += detour.amount;
-                        sumFalse = profitPerMonthFalse / detour.month;
-
-                    }
                 }
             }
-
             System.out.println("Средний расход за все месяцы: " + sumTrue);
             System.out.println("Средний доход за все месяцы: " + sumFalse);
-        } catch (Exception e) {
-            System.out.println("В начале считайте годовой отчет!");
         }
-
     }
 
     public void printYear() {

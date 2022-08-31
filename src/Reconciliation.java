@@ -1,22 +1,26 @@
 public class Reconciliation {
 
     public  void reconciliationOfReports(MonthlyReport monthlyReport, YearlyReport yearlyReport) {
-        boolean reconciliation = true;
-try {
-    for (int i = 1; i <= 3; i++) {
-        if ((monthlyReport.getMonthIncome(i) != yearlyReport.getMonthIncome(i)) ||
-                (monthlyReport.getMonthSpending(i) != yearlyReport.getMonthSpending(i))) {
-            System.out.println(monthlyReport.getNameMonth(i) + ": обнаружено несоответствие");
-            reconciliation = false;
-        }
-    }
-    if (!reconciliation) {
-        System.out.println("Сверка прошла успешно");
+        boolean reconciliation = false;
 
-    }
-} catch (Exception e) {
-    System.out.println("Для сверки в начале нужно сверить отчеты!");
-}
+        try {
+
+            for (int i = 1; i <= 3; i++) {
+                if ((monthlyReport.getMonthIncome(i) == yearlyReport.getMonthIncome(i)) ||
+                        (monthlyReport.getMonthSpending(i) == yearlyReport.getMonthSpending(i))) {
+                    System.out.println("Сверка прошла успешно");
+                   reconciliation = true;
+                }
+            }
+            if (!reconciliation) {
+                for (int i = 0; i <= 3 ; i++) {
+                    System.out.println(monthlyReport.getNameMonths(i) + ": обнаружено несоответствие");
+                }
+
+            }
+        } catch (Exception e) {
+            System.out.println("Для сверки в начале нужно сверить отчеты!");
+        }
     }
 }
 

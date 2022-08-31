@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class BilletYear {
     int month;
     int amount;
@@ -10,7 +8,6 @@ public class BilletYear {
         this.amount = amount;
         this.isExpense = isExpense;
     }
-
 
 
     @Override
